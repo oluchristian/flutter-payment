@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_payment_app/component/colors.dart';
+import 'package:flutter_payment_app/pages/payment_page.dart';
 import 'package:flutter_payment_app/widgets/buttons.dart';
 import 'package:flutter_payment_app/widgets/large_buttons.dart';
 import 'package:flutter_payment_app/widgets/text_size.dart';
+import 'package:get/get.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -354,6 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: AppLargeButton(
         text: 'Pay all bills',
         textColor: Colors.white,
+        onTap: (){Get.to(()=>PaymentPage());},
       ),
     );
   }

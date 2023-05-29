@@ -40,7 +40,7 @@ class AppLargeButton extends StatelessWidget {
             text!,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 40,
+              fontSize: 30,
               color: textColor,
             ),
           ),
