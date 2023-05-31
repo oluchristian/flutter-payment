@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final DataController _controller = Get.put(DataController());
   @override
   Widget build(BuildContext context) {
-    print(_controller.test);
+    print(_controller.list);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(

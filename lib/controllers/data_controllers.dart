@@ -7,15 +7,15 @@ class DataController extends GetxController{
   final service = new DataServices();
   @override
   void onInit() {
-    _testData();
-    // _loadData();
+    _loadData();
     super.onInit();
   }
 
 
 
-  _testData(){
-    list.add('item');
+   _loadData() async {   
+    var info = await service.getUsers();
+    list.addAll(info);
   }
 }
 
@@ -29,7 +29,3 @@ class DataController extends GetxController{
 
 
 
-  //  _loadData() async {   
-  //   var info = await service.getUsers();
-  //   list.addAll(info);
-  // }
