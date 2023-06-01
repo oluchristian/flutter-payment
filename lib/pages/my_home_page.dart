@@ -18,7 +18,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final DataController _controller = Get.put(DataController());
   @override
   Widget build(BuildContext context) {
-    print(_controller.list);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -29,7 +28,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           children: [
             _headSection(),
-            _listBills(),
+            Obx(() {
+              if (_controller.loading == false) {
+                  return Center(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      child: CircularProgressIndicator(),
+                      ),
+                  );
+                }else{
+                  return _listBills();
+                }
+          }),
             _payButton(),
             _textContainer(),
           ],
@@ -195,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
         removeTop: true,
         context: context,
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: _controller.list.length,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.only(top: 20, right: 20),
@@ -222,6 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
@@ -238,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: AssetImage(
-                                    'images/brand1.png',
+                                    _controller.list[index]['img'],
                                   ),
                                 ),
                               ),
@@ -250,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "tesr",
+                                  _controller.list[index]["brand"],
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: AppColor.mainColor,
@@ -261,7 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 10,
                                 ),
                                 Text(
-                                  'ID:846594',
+                                  _controller.list[index]["due"],
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: AppColor.idColor,
@@ -273,7 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         SizedText(
-                          text: "Auto pay on 24th May 18",
+                          text: _controller.list[index]["more"],
                           color: AppColor.green,
                         ),
                         SizedBox(
@@ -286,19 +298,26 @@ class _MyHomePageState extends State<MyHomePage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 80,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: AppColor.selectBackground,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Select',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: AppColor.selectColor,
+                            GestureDetector(
+                              onTap: (){
+                                _controller.list[index]['status'] =! _controller.list[index]['status'];
+                                print(_controller.list[index]['status']);
+                                _controller.list.refresh();
+                              },
+                              child: Container(
+                                width: 80,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: _controller.list[index]['status'] == false ? AppColor.selectBackground : AppColor.green ,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Select',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColor.selectColor,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -307,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Container(),
                             ),
                             Text(
-                              '\$1248.00',
+                              '\$'+_controller.list[index]['due'],
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w900,
