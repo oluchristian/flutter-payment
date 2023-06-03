@@ -7,6 +7,10 @@ class DataController extends GetxController{
   final service = new DataServices();
 
   get loading => _loading.value;
+
+  get newList {
+    return list.where((e) => e['status']).map((e) => e).toList();
+  }
   @override
   void onInit() {
     _loadData();
