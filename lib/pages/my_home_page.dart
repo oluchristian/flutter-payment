@@ -249,9 +249,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: AssetImage(
+                                  image: NetworkImage(
                                     //_controller.list[index]['img'],
-                                    "images/brand1.png"
+                                    "http://paymentapp.test/uploads/"+_controller.list[index].brand_logo,
                                   ),
                                 ),
                               ),
@@ -263,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  _controller.list[index]["brand_name"],
+                                  _controller.list[index].brand_name,
                                   
                                   style: TextStyle(
                                     fontSize: 16,
@@ -275,8 +275,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   width: 10,
                                 ),
                                 Text(
-                                  //_controller.list[index]["due"],
-                                  'due',
+                                  "ID:"+_controller.list[index].brand_id.toString(),
+                                  
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: AppColor.idColor,
@@ -288,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         SizedText(
-                          text: _controller.list[index]["due_info"],
+                          text: _controller.list[index].due_info,
                          
                           color: AppColor.green,
                         ),
@@ -304,8 +304,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             GestureDetector(
                               onTap: (){
-                                _controller.list[index]['status'] =! _controller.list[index]['status'];
-                                print(_controller.list[index]['status']);
+                                if (_controller.list[index].status == 0) {
+                                  _controller.list[index].status =1;
+                                }else if(_controller.list[index].status ==1){
+                                  _controller.list[index].status =0;
+                                }
+                                print(_controller.list[index].status);
                                 _controller.list.refresh();
                                 print(_controller.newList.length);
                               },
@@ -314,14 +318,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 height: 30,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
-                                  color: _controller.list[index]['status'] == false ? AppColor.selectBackground : AppColor.green ,
+                                  color: _controller.list[index].status == 0 ? AppColor.selectBackground : AppColor.green ,
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Select',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color:  _controller.list[index]['status'] == false ? AppColor.selectColor : Colors.white ,
+                                      color:  _controller.list[index].status == 0 ? AppColor.selectColor : Colors.white ,
                                     ),
                                   ),
                                 ),
@@ -330,8 +334,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Expanded(
                               child: Container(),
                             ),
-                            Text( 
-                              '\$'+"{$_controller.list[index]['due']}",
+                            Text(
+                              '\$'+_controller.list[index].due,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w900,

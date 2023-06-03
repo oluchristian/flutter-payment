@@ -1,15 +1,16 @@
+import 'package:flutter_payment_app/data_model.dart';
 import 'package:flutter_payment_app/services/data_services.dart';
 import 'package:get/get.dart';
 
 class DataController extends GetxController{
-  var list = [].obs;
+  RxList<DataModel> list = <DataModel> [].obs;
   var _loading = false.obs;
   final service = new DataServices();
 
   get loading => _loading.value;
 
   get newList {
-    return list.where((e) => e['status']).map((e) => e).toList();
+    return list.where((e) => e.status ==0?false:true).map((e) => e).toList();
   }
   @override
   void onInit() {
@@ -25,8 +26,8 @@ class DataController extends GetxController{
      _loadData() async {  
       _loading.value = false;
       try {
-      List info = await service.getUsers();
-      list.addAll(info);
+      var info = await service.getUsers();
+      list.addAll(await info);
         
       } catch (e) {
         print('Error encountered !');
